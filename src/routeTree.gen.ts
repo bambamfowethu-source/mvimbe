@@ -10,33 +10,180 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AlertsRouteImport } from './routes/alerts'
+import { Route as HomeRouteImport } from './routes/home'
+import { Route as MapRouteImport } from './routes/map'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as ReportRouteImport } from './routes/report'
+import { Route as ToolsCommunityRouteImport } from './routes/tools.community'
+import { Route as ToolsEvidenceRouteImport } from './routes/tools.evidence'
+import { Route as ToolsPatrolRouteImport } from './routes/tools.patrol'
+import { Route as ToolsSafeZonesRouteImport } from './routes/tools.safe-zones'
+import { Route as ToolsSosRouteImport } from './routes/tools.sos'
+import { Route as ToolsStatsRouteImport } from './routes/tools.stats'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AlertsRoute = AlertsRouteImport.update({
+  id: '/alerts',
+  path: '/alerts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HomeRoute = HomeRouteImport.update({
+  id: '/home',
+  path: '/home',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MapRoute = MapRouteImport.update({
+  id: '/map',
+  path: '/map',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportRoute = ReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsCommunityRoute = ToolsCommunityRouteImport.update({
+  id: '/tools/community',
+  path: '/tools/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsEvidenceRoute = ToolsEvidenceRouteImport.update({
+  id: '/tools/evidence',
+  path: '/tools/evidence',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsPatrolRoute = ToolsPatrolRouteImport.update({
+  id: '/tools/patrol',
+  path: '/tools/patrol',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsSafeZonesRoute = ToolsSafeZonesRouteImport.update({
+  id: '/tools/safe-zones',
+  path: '/tools/safe-zones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsSosRoute = ToolsSosRouteImport.update({
+  id: '/tools/sos',
+  path: '/tools/sos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsStatsRoute = ToolsStatsRouteImport.update({
+  id: '/tools/stats',
+  path: '/tools/stats',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/alerts': typeof AlertsRoute
+  '/home': typeof HomeRoute
+  '/map': typeof MapRoute
+  '/profile': typeof ProfileRoute
+  '/report': typeof ReportRoute
+  '/tools/community': typeof ToolsCommunityRoute
+  '/tools/evidence': typeof ToolsEvidenceRoute
+  '/tools/patrol': typeof ToolsPatrolRoute
+  '/tools/safe-zones': typeof ToolsSafeZonesRoute
+  '/tools/sos': typeof ToolsSosRoute
+  '/tools/stats': typeof ToolsStatsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/alerts': typeof AlertsRoute
+  '/home': typeof HomeRoute
+  '/map': typeof MapRoute
+  '/profile': typeof ProfileRoute
+  '/report': typeof ReportRoute
+  '/tools/community': typeof ToolsCommunityRoute
+  '/tools/evidence': typeof ToolsEvidenceRoute
+  '/tools/patrol': typeof ToolsPatrolRoute
+  '/tools/safe-zones': typeof ToolsSafeZonesRoute
+  '/tools/sos': typeof ToolsSosRoute
+  '/tools/stats': typeof ToolsStatsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/alerts': typeof AlertsRoute
+  '/home': typeof HomeRoute
+  '/map': typeof MapRoute
+  '/profile': typeof ProfileRoute
+  '/report': typeof ReportRoute
+  '/tools/community': typeof ToolsCommunityRoute
+  '/tools/evidence': typeof ToolsEvidenceRoute
+  '/tools/patrol': typeof ToolsPatrolRoute
+  '/tools/safe-zones': typeof ToolsSafeZonesRoute
+  '/tools/sos': typeof ToolsSosRoute
+  '/tools/stats': typeof ToolsStatsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/alerts'
+    | '/home'
+    | '/map'
+    | '/profile'
+    | '/report'
+    | '/tools/community'
+    | '/tools/evidence'
+    | '/tools/patrol'
+    | '/tools/safe-zones'
+    | '/tools/sos'
+    | '/tools/stats'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/alerts'
+    | '/home'
+    | '/map'
+    | '/profile'
+    | '/report'
+    | '/tools/community'
+    | '/tools/evidence'
+    | '/tools/patrol'
+    | '/tools/safe-zones'
+    | '/tools/sos'
+    | '/tools/stats'
+  id:
+    | '__root__'
+    | '/'
+    | '/alerts'
+    | '/home'
+    | '/map'
+    | '/profile'
+    | '/report'
+    | '/tools/community'
+    | '/tools/evidence'
+    | '/tools/patrol'
+    | '/tools/safe-zones'
+    | '/tools/sos'
+    | '/tools/stats'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AlertsRoute: typeof AlertsRoute
+  HomeRoute: typeof HomeRoute
+  MapRoute: typeof MapRoute
+  ProfileRoute: typeof ProfileRoute
+  ReportRoute: typeof ReportRoute
+  ToolsCommunityRoute: typeof ToolsCommunityRoute
+  ToolsEvidenceRoute: typeof ToolsEvidenceRoute
+  ToolsPatrolRoute: typeof ToolsPatrolRoute
+  ToolsSafeZonesRoute: typeof ToolsSafeZonesRoute
+  ToolsSosRoute: typeof ToolsSosRoute
+  ToolsStatsRoute: typeof ToolsStatsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +195,99 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/alerts': {
+      id: '/alerts'
+      path: '/alerts'
+      fullPath: '/alerts'
+      preLoaderRoute: typeof AlertsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/home': {
+      id: '/home'
+      path: '/home'
+      fullPath: '/home'
+      preLoaderRoute: typeof HomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/map': {
+      id: '/map'
+      path: '/map'
+      fullPath: '/map'
+      preLoaderRoute: typeof MapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/report': {
+      id: '/report'
+      path: '/report'
+      fullPath: '/report'
+      preLoaderRoute: typeof ReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/community': {
+      id: '/tools/community'
+      path: '/tools/community'
+      fullPath: '/tools/community'
+      preLoaderRoute: typeof ToolsCommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/evidence': {
+      id: '/tools/evidence'
+      path: '/tools/evidence'
+      fullPath: '/tools/evidence'
+      preLoaderRoute: typeof ToolsEvidenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/patrol': {
+      id: '/tools/patrol'
+      path: '/tools/patrol'
+      fullPath: '/tools/patrol'
+      preLoaderRoute: typeof ToolsPatrolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/safe-zones': {
+      id: '/tools/safe-zones'
+      path: '/tools/safe-zones'
+      fullPath: '/tools/safe-zones'
+      preLoaderRoute: typeof ToolsSafeZonesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/sos': {
+      id: '/tools/sos'
+      path: '/tools/sos'
+      fullPath: '/tools/sos'
+      preLoaderRoute: typeof ToolsSosRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/stats': {
+      id: '/tools/stats'
+      path: '/tools/stats'
+      fullPath: '/tools/stats'
+      preLoaderRoute: typeof ToolsStatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AlertsRoute: AlertsRoute,
+  HomeRoute: HomeRoute,
+  MapRoute: MapRoute,
+  ProfileRoute: ProfileRoute,
+  ReportRoute: ReportRoute,
+  ToolsCommunityRoute: ToolsCommunityRoute,
+  ToolsEvidenceRoute: ToolsEvidenceRoute,
+  ToolsPatrolRoute: ToolsPatrolRoute,
+  ToolsSafeZonesRoute: ToolsSafeZonesRoute,
+  ToolsSosRoute: ToolsSosRoute,
+  ToolsStatsRoute: ToolsStatsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
