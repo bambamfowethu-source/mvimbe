@@ -15,8 +15,11 @@ import { Route as HomeRouteImport } from './routes/home'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ReportRouteImport } from './routes/report'
+import { Route as ToolsCommunityRouteImport } from './routes/tools.community'
 import { Route as ToolsEvidenceRouteImport } from './routes/tools.evidence'
 import { Route as ToolsPatrolRouteImport } from './routes/tools.patrol'
+import { Route as ToolsSafeZonesRouteImport } from './routes/tools.safe-zones'
+import { Route as ToolsSosRouteImport } from './routes/tools.sos'
 import { Route as ToolsStatsRouteImport } from './routes/tools.stats'
 
 const IndexRoute = IndexRouteImport.update({
@@ -49,6 +52,11 @@ const ReportRoute = ReportRouteImport.update({
   path: '/report',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsCommunityRoute = ToolsCommunityRouteImport.update({
+  id: '/tools/community',
+  path: '/tools/community',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ToolsEvidenceRoute = ToolsEvidenceRouteImport.update({
   id: '/tools/evidence',
   path: '/tools/evidence',
@@ -57,6 +65,16 @@ const ToolsEvidenceRoute = ToolsEvidenceRouteImport.update({
 const ToolsPatrolRoute = ToolsPatrolRouteImport.update({
   id: '/tools/patrol',
   path: '/tools/patrol',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsSafeZonesRoute = ToolsSafeZonesRouteImport.update({
+  id: '/tools/safe-zones',
+  path: '/tools/safe-zones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsSosRoute = ToolsSosRouteImport.update({
+  id: '/tools/sos',
+  path: '/tools/sos',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ToolsStatsRoute = ToolsStatsRouteImport.update({
@@ -72,8 +90,11 @@ export interface FileRoutesByFullPath {
   '/map': typeof MapRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
+  '/tools/community': typeof ToolsCommunityRoute
   '/tools/evidence': typeof ToolsEvidenceRoute
   '/tools/patrol': typeof ToolsPatrolRoute
+  '/tools/safe-zones': typeof ToolsSafeZonesRoute
+  '/tools/sos': typeof ToolsSosRoute
   '/tools/stats': typeof ToolsStatsRoute
 }
 export interface FileRoutesByTo {
@@ -83,8 +104,11 @@ export interface FileRoutesByTo {
   '/map': typeof MapRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
+  '/tools/community': typeof ToolsCommunityRoute
   '/tools/evidence': typeof ToolsEvidenceRoute
   '/tools/patrol': typeof ToolsPatrolRoute
+  '/tools/safe-zones': typeof ToolsSafeZonesRoute
+  '/tools/sos': typeof ToolsSosRoute
   '/tools/stats': typeof ToolsStatsRoute
 }
 export interface FileRoutesById {
@@ -95,8 +119,11 @@ export interface FileRoutesById {
   '/map': typeof MapRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
+  '/tools/community': typeof ToolsCommunityRoute
   '/tools/evidence': typeof ToolsEvidenceRoute
   '/tools/patrol': typeof ToolsPatrolRoute
+  '/tools/safe-zones': typeof ToolsSafeZonesRoute
+  '/tools/sos': typeof ToolsSosRoute
   '/tools/stats': typeof ToolsStatsRoute
 }
 export interface FileRouteTypes {
@@ -108,8 +135,11 @@ export interface FileRouteTypes {
     | '/map'
     | '/profile'
     | '/report'
+    | '/tools/community'
     | '/tools/evidence'
     | '/tools/patrol'
+    | '/tools/safe-zones'
+    | '/tools/sos'
     | '/tools/stats'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -119,8 +149,11 @@ export interface FileRouteTypes {
     | '/map'
     | '/profile'
     | '/report'
+    | '/tools/community'
     | '/tools/evidence'
     | '/tools/patrol'
+    | '/tools/safe-zones'
+    | '/tools/sos'
     | '/tools/stats'
   id:
     | '__root__'
@@ -130,8 +163,11 @@ export interface FileRouteTypes {
     | '/map'
     | '/profile'
     | '/report'
+    | '/tools/community'
     | '/tools/evidence'
     | '/tools/patrol'
+    | '/tools/safe-zones'
+    | '/tools/sos'
     | '/tools/stats'
   fileRoutesById: FileRoutesById
 }
@@ -142,8 +178,11 @@ export interface RootRouteChildren {
   MapRoute: typeof MapRoute
   ProfileRoute: typeof ProfileRoute
   ReportRoute: typeof ReportRoute
+  ToolsCommunityRoute: typeof ToolsCommunityRoute
   ToolsEvidenceRoute: typeof ToolsEvidenceRoute
   ToolsPatrolRoute: typeof ToolsPatrolRoute
+  ToolsSafeZonesRoute: typeof ToolsSafeZonesRoute
+  ToolsSosRoute: typeof ToolsSosRoute
   ToolsStatsRoute: typeof ToolsStatsRoute
 }
 
@@ -191,6 +230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/community': {
+      id: '/tools/community'
+      path: '/tools/community'
+      fullPath: '/tools/community'
+      preLoaderRoute: typeof ToolsCommunityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tools/evidence': {
       id: '/tools/evidence'
       path: '/tools/evidence'
@@ -203,6 +249,20 @@ declare module '@tanstack/react-router' {
       path: '/tools/patrol'
       fullPath: '/tools/patrol'
       preLoaderRoute: typeof ToolsPatrolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/safe-zones': {
+      id: '/tools/safe-zones'
+      path: '/tools/safe-zones'
+      fullPath: '/tools/safe-zones'
+      preLoaderRoute: typeof ToolsSafeZonesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/sos': {
+      id: '/tools/sos'
+      path: '/tools/sos'
+      fullPath: '/tools/sos'
+      preLoaderRoute: typeof ToolsSosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/tools/stats': {
@@ -222,8 +282,11 @@ const rootRouteChildren: RootRouteChildren = {
   MapRoute: MapRoute,
   ProfileRoute: ProfileRoute,
   ReportRoute: ReportRoute,
+  ToolsCommunityRoute: ToolsCommunityRoute,
   ToolsEvidenceRoute: ToolsEvidenceRoute,
   ToolsPatrolRoute: ToolsPatrolRoute,
+  ToolsSafeZonesRoute: ToolsSafeZonesRoute,
+  ToolsSosRoute: ToolsSosRoute,
   ToolsStatsRoute: ToolsStatsRoute,
 }
 export const routeTree = rootRouteImport
