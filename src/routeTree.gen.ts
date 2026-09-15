@@ -15,6 +15,9 @@ import { Route as HomeRouteImport } from './routes/home'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ReportRouteImport } from './routes/report'
+import { Route as ToolsEvidenceRouteImport } from './routes/tools.evidence'
+import { Route as ToolsPatrolRouteImport } from './routes/tools.patrol'
+import { Route as ToolsStatsRouteImport } from './routes/tools.stats'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -46,6 +49,21 @@ const ReportRoute = ReportRouteImport.update({
   path: '/report',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ToolsEvidenceRoute = ToolsEvidenceRouteImport.update({
+  id: '/tools/evidence',
+  path: '/tools/evidence',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsPatrolRoute = ToolsPatrolRouteImport.update({
+  id: '/tools/patrol',
+  path: '/tools/patrol',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsStatsRoute = ToolsStatsRouteImport.update({
+  id: '/tools/stats',
+  path: '/tools/stats',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -54,6 +72,9 @@ export interface FileRoutesByFullPath {
   '/map': typeof MapRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
+  '/tools/evidence': typeof ToolsEvidenceRoute
+  '/tools/patrol': typeof ToolsPatrolRoute
+  '/tools/stats': typeof ToolsStatsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +83,9 @@ export interface FileRoutesByTo {
   '/map': typeof MapRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
+  '/tools/evidence': typeof ToolsEvidenceRoute
+  '/tools/patrol': typeof ToolsPatrolRoute
+  '/tools/stats': typeof ToolsStatsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,13 +95,44 @@ export interface FileRoutesById {
   '/map': typeof MapRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
+  '/tools/evidence': typeof ToolsEvidenceRoute
+  '/tools/patrol': typeof ToolsPatrolRoute
+  '/tools/stats': typeof ToolsStatsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/alerts' | '/home' | '/map' | '/profile' | '/report'
+  fullPaths:
+    | '/'
+    | '/alerts'
+    | '/home'
+    | '/map'
+    | '/profile'
+    | '/report'
+    | '/tools/evidence'
+    | '/tools/patrol'
+    | '/tools/stats'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/alerts' | '/home' | '/map' | '/profile' | '/report'
-  id: '__root__' | '/' | '/alerts' | '/home' | '/map' | '/profile' | '/report'
+  to:
+    | '/'
+    | '/alerts'
+    | '/home'
+    | '/map'
+    | '/profile'
+    | '/report'
+    | '/tools/evidence'
+    | '/tools/patrol'
+    | '/tools/stats'
+  id:
+    | '__root__'
+    | '/'
+    | '/alerts'
+    | '/home'
+    | '/map'
+    | '/profile'
+    | '/report'
+    | '/tools/evidence'
+    | '/tools/patrol'
+    | '/tools/stats'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -87,6 +142,9 @@ export interface RootRouteChildren {
   MapRoute: typeof MapRoute
   ProfileRoute: typeof ProfileRoute
   ReportRoute: typeof ReportRoute
+  ToolsEvidenceRoute: typeof ToolsEvidenceRoute
+  ToolsPatrolRoute: typeof ToolsPatrolRoute
+  ToolsStatsRoute: typeof ToolsStatsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -133,6 +191,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tools/evidence': {
+      id: '/tools/evidence'
+      path: '/tools/evidence'
+      fullPath: '/tools/evidence'
+      preLoaderRoute: typeof ToolsEvidenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/patrol': {
+      id: '/tools/patrol'
+      path: '/tools/patrol'
+      fullPath: '/tools/patrol'
+      preLoaderRoute: typeof ToolsPatrolRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools/stats': {
+      id: '/tools/stats'
+      path: '/tools/stats'
+      fullPath: '/tools/stats'
+      preLoaderRoute: typeof ToolsStatsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -143,6 +222,9 @@ const rootRouteChildren: RootRouteChildren = {
   MapRoute: MapRoute,
   ProfileRoute: ProfileRoute,
   ReportRoute: ReportRoute,
+  ToolsEvidenceRoute: ToolsEvidenceRoute,
+  ToolsPatrolRoute: ToolsPatrolRoute,
+  ToolsStatsRoute: ToolsStatsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
