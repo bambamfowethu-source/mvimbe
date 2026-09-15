@@ -27,7 +27,11 @@ type Ctx = State & {
 };
 
 const STORAGE_KEY = "wcu-state-v1";
-const defaultState: State = { role: null, city: CITIES[0], reports: [] };
+const defaultState: State = {
+  role: null,
+  city: CITIES[0] ?? "Johannesburg, South Africa",
+  reports: [],
+};
 
 const StoreContext = React.createContext<Ctx | null>(null);
 
