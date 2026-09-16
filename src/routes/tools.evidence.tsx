@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { FileText, Image as ImageIcon, Lock, Mic, Video } from "lucide-react";
 import { AppShell, ScreenHeader } from "@/components/wcu/AppShell";
 import { EVIDENCE_ITEMS } from "@/lib/wcu/data";
+import { useWcu } from "@/lib/wcu/store";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/tools/evidence")({
@@ -31,6 +32,17 @@ const TONES: Record<string, string> = {
 };
 
 function EvidenceVault() {
+  const { reports } = useWcu();
+  const mine = reports.flatMap((r) =>
+    (r.attachments.length ? r.attachments : ["Document"]).map((a, i) => ({
+      id: `${r.id}-${i}`,
+      type: a === "Voice" ? "Audio" : a === "Photo" || a === "Video" ? a : "Document",
+      label: `${r.category} — ${r.ref}`,
+      time: new Date(r.createdAt).toLocaleString(),
+      tone: "electric",
+    })),
+  );
+
   return (
     <AppShell>
       <ScreenHeader title="Evidence Vault" subtitle="End-to-end encrypted" back="/home" />
@@ -43,7 +55,7 @@ function EvidenceVault() {
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        {EVIDENCE_ITEMS.map((e) => {
+        {[...mine, ...EVIDENCE_ITEMS].map((e) => {
           const Icon = ICONS[e.type as keyof typeof ICONS] ?? FileText;
           return (
             <article key={e.id} className="glass overflow-hidden rounded-2xl">
