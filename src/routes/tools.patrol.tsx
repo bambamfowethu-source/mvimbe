@@ -2,7 +2,8 @@ import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { CheckCircle2, Circle, Clock, Navigation, Route as RouteIcon } from "lucide-react";
 import { AppShell, ScreenHeader } from "@/components/wcu/AppShell";
-import { PATROL_CHECKINS } from "@/lib/wcu/data";
+import { PATROL_CHECKINS, ROLES } from "@/lib/wcu/data";
+import { useWcu } from "@/lib/wcu/store";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/tools/patrol")({
@@ -23,15 +24,39 @@ export const Route = createFileRoute("/tools/patrol")({
   component: PatrolTools,
 });
 
+const ROUTE_BY_ROLE: Record<string, string> = {
+  citizen: "Neighbourhood walk · self check-ins",
+  patroller: "Shift JHB-07 · Day route",
+  police: "Sector 4 response route",
+  security: "Client sites · contract route",
+};
+
 function PatrolTools() {
+  const { role } = useWcu();
   const [done, setDone] = React.useState<string[]>(
     PATROL_CHECKINS.filter((c) => c.status === "Complete").map((c) => c.id),
   );
+  const [onShift, setOnShift] = React.useState(true);
   const progress = Math.round((done.length / PATROL_CHECKINS.length) * 100);
+  const roleLabel = ROLES.find((r) => r.id === role)?.label ?? "Citizen";
 
   return (
     <AppShell>
-      <ScreenHeader title="Patrol Tools" subtitle="Shift JHB-07 · Day route" back="/home" />
+      <ScreenHeader
+        title="Patrol Tools"
+        subtitle={`${roleLabel} · ${ROUTE_BY_ROLE[role ?? "citizen"]}`}
+        back="/home"
+      />
+
+      <button
+        onClick={() => setOnShift((v) => !v)}
+        className={cn(
+          "mb-4 w-full rounded-2xl border py-3 text-sm font-bold",
+          onShift ? "border-safe/60 bg-safe/10 text-safe" : "border-border text-muted-foreground",
+        )}
+      >
+        {onShift ? "On duty — tap to end shift" : "Off duty — tap to start shift"}
+      </button>
 
       <div className="glass rounded-3xl p-4">
         <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-3">

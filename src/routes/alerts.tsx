@@ -58,7 +58,20 @@ function AlertsScreen() {
                   <Icon className="h-5 w-5" />
                 </span>
                 <div className="min-w-0 flex-1">
-                  <h2 className={cn("truncate text-sm font-bold", toneText[a.tone])}>{a.title}</h2>
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h2 className={cn("min-w-0 truncate text-sm font-bold", toneText[a.tone])}>
+                      {a.title}
+                    </h2>
+                    <span
+                      className={cn(
+                        "shrink-0 rounded-full border px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase",
+                        toneRing[a.tone],
+                        toneText[a.tone],
+                      )}
+                    >
+                      {a.tone === "alert" ? "High" : a.tone === "electric" ? "Medium" : "Watch"}
+                    </span>
+                  </div>
                   <p className="mt-0.5 text-xs text-foreground/85">{a.body}</p>
                   <p className="mt-1 text-[11px] text-muted-foreground">{a.ago}</p>
                 </div>

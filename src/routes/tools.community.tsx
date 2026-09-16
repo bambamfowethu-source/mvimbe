@@ -1,3 +1,4 @@
+import * as React from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { MessageCircle, Users } from "lucide-react";
 import { AppShell, ScreenHeader } from "@/components/wcu/AppShell";
@@ -22,8 +23,29 @@ export const Route = createFileRoute("/tools/community")({
   component: CommunityScreen,
 });
 
+type Post = { id: string; author: string; role: string; ago: string; body: string; replies: number };
+
 function CommunityScreen() {
-  const { city } = useWcu();
+  const { city, role } = useWcu();
+  const [posts, setPosts] = React.useState<Post[]>([...COMMUNITY_POSTS]);
+  const [draft, setDraft] = React.useState("");
+
+  const post = () => {
+    const body = draft.trim();
+    if (!body) return;
+    setPosts((p) => [
+      {
+        id: crypto.randomUUID(),
+        author: "You",
+        role: role ? role[0]!.toUpperCase() + role.slice(1) : "Citizen",
+        ago: "Just now",
+        body,
+        replies: 0,
+      },
+      ...p,
+    ]);
+    setDraft("");
+  };
 
   return (
     <AppShell>
@@ -38,7 +60,7 @@ function CommunityScreen() {
       </div>
 
       <div className="space-y-3">
-        {COMMUNITY_POSTS.map((p) => (
+        {posts.map((p) => (
           <article key={p.id} className="glass rounded-2xl p-4">
             <div className="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
               <div className="min-w-0">
@@ -56,7 +78,22 @@ function CommunityScreen() {
         ))}
       </div>
 
-      <button className="glow-electric mt-5 w-full rounded-2xl bg-gradient-to-r from-electric to-violet py-3 text-sm font-bold text-electric-foreground">
+      <label htmlFor="post" className="mt-6 mb-2 block text-sm text-muted-foreground">
+        Report a local issue
+      </label>
+      <textarea
+        id="post"
+        rows={3}
+        value={draft}
+        onChange={(e) => setDraft(e.target.value)}
+        placeholder="Street lights, suspicious activity, community meet-ups…"
+        className="w-full rounded-2xl border border-border bg-surface/70 p-3 text-sm outline-none focus:border-neon"
+      />
+      <button
+        onClick={post}
+        disabled={!draft.trim()}
+        className="glow-electric mt-3 w-full rounded-2xl bg-gradient-to-r from-electric to-violet py-3 text-sm font-bold text-electric-foreground disabled:opacity-40"
+      >
         Post an update
       </button>
     </AppShell>
