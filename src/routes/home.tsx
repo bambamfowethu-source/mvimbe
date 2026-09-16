@@ -132,28 +132,42 @@ function HomeScreen() {
       </div>
 
       <h2 className="mt-8 mb-3 font-display text-sm font-bold tracking-widest text-muted-foreground">
-        QUICK ACTIONS
+        {roleLabel.toUpperCase()} TOOLS
       </h2>
-      <div className="grid grid-cols-2 gap-3">
-        {ACTIONS.map(({ to, label, icon: Icon, tone, roles }) => {
-          const featured = role ? (roles as readonly string[]).includes(role) : false;
-          return (
-            <Link
-              key={to}
-              to={to}
-              className={cn(
-                "glass flex items-center gap-3 rounded-2xl p-3 transition-transform active:scale-[0.98]",
-                featured && "border-neon/50",
-              )}
-            >
-              <span className={cn("grid h-10 w-10 shrink-0 place-items-center rounded-xl", toneClass[tone])}>
-                <Icon className="h-5 w-5" />
-              </span>
-              <span className="min-w-0 text-sm font-semibold">{label}</span>
-            </Link>
-          );
-        })}
-      </div>
+      <ActionGrid actions={forRole} featured />
+
+      {others.length ? (
+        <>
+          <h2 className="mt-6 mb-3 font-display text-sm font-bold tracking-widest text-muted-foreground">
+            MORE
+          </h2>
+          <ActionGrid actions={others} />
+        </>
+      ) : null}
     </AppShell>
+  );
+}
+
+type Action = (typeof ACTIONS)[number];
+
+function ActionGrid({ actions, featured }: { actions: Action[]; featured?: boolean }) {
+  return (
+    <div className="grid grid-cols-2 gap-3">
+      {actions.map(({ to, label, icon: Icon, tone }) => (
+        <Link
+          key={to}
+          to={to}
+          className={cn(
+            "glass flex items-center gap-3 rounded-2xl p-3 transition-transform active:scale-[0.98]",
+            featured && "border-neon/50",
+          )}
+        >
+          <span className={cn("grid h-10 w-10 shrink-0 place-items-center rounded-xl", toneClass[tone])}>
+            <Icon className="h-5 w-5" />
+          </span>
+          <span className="min-w-0 text-sm font-semibold">{label}</span>
+        </Link>
+      ))}
+    </div>
   );
 }
