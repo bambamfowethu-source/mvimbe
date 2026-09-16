@@ -61,6 +61,9 @@ function HomeScreen() {
   const navigate = useNavigate();
   const [switching, setSwitching] = React.useState(false);
   const roleLabel = ROLES.find((r) => r.id === role)?.label ?? "Citizen";
+  const activeRole = role ?? "citizen";
+  const forRole = ACTIONS.filter((a) => (a.roles as readonly string[]).includes(activeRole));
+  const others = ACTIONS.filter((a) => !(a.roles as readonly string[]).includes(activeRole));
 
   return (
     <AppShell>
