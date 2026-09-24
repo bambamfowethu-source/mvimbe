@@ -10,26 +10,43 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AlertsRouteImport } from './routes/alerts'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ReportRouteImport } from './routes/report'
+import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
+import { Route as AuthenticatedActivityRouteImport } from './routes/_authenticated/activity'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedPrivacyRouteImport } from './routes/_authenticated/privacy'
+import { Route as AuthenticatedSessionsRouteImport } from './routes/_authenticated/sessions'
 import { Route as ToolsCommunityRouteImport } from './routes/tools.community'
 import { Route as ToolsEvidenceRouteImport } from './routes/tools.evidence'
 import { Route as ToolsPatrolRouteImport } from './routes/tools.patrol'
 import { Route as ToolsSafeZonesRouteImport } from './routes/tools.safe-zones'
 import { Route as ToolsSosRouteImport } from './routes/tools.sos'
 import { Route as ToolsStatsRouteImport } from './routes/tools.stats'
+import { Route as AuthenticatedSessionsIdRouteImport } from './routes/_authenticated/sessions.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AlertsRoute = AlertsRouteImport.update({
   id: '/alerts',
   path: '/alerts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HomeRoute = HomeRouteImport.update({
@@ -51,6 +68,31 @@ const ReportRoute = ReportRouteImport.update({
   id: '/report',
   path: '/report',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedActivityRoute = AuthenticatedActivityRouteImport.update({
+  id: '/activity',
+  path: '/activity',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPrivacyRoute = AuthenticatedPrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSessionsRoute = AuthenticatedSessionsRouteImport.update({
+  id: '/sessions',
+  path: '/sessions',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const ToolsCommunityRoute = ToolsCommunityRouteImport.update({
   id: '/tools/community',
@@ -82,98 +124,149 @@ const ToolsStatsRoute = ToolsStatsRouteImport.update({
   path: '/tools/stats',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedSessionsIdRoute = AuthenticatedSessionsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => AuthenticatedSessionsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/alerts': typeof AlertsRoute
+  '/auth': typeof AuthRoute
   '/home': typeof HomeRoute
   '/map': typeof MapRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
+  '/account': typeof AuthenticatedAccountRoute
+  '/activity': typeof AuthenticatedActivityRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/privacy': typeof AuthenticatedPrivacyRoute
+  '/sessions': typeof AuthenticatedSessionsRouteWithChildren
   '/tools/community': typeof ToolsCommunityRoute
   '/tools/evidence': typeof ToolsEvidenceRoute
   '/tools/patrol': typeof ToolsPatrolRoute
   '/tools/safe-zones': typeof ToolsSafeZonesRoute
   '/tools/sos': typeof ToolsSosRoute
   '/tools/stats': typeof ToolsStatsRoute
+  '/sessions/$id': typeof AuthenticatedSessionsIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/alerts': typeof AlertsRoute
+  '/auth': typeof AuthRoute
   '/home': typeof HomeRoute
   '/map': typeof MapRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
+  '/account': typeof AuthenticatedAccountRoute
+  '/activity': typeof AuthenticatedActivityRoute
+  '/admin': typeof AuthenticatedAdminRoute
+  '/privacy': typeof AuthenticatedPrivacyRoute
+  '/sessions': typeof AuthenticatedSessionsRouteWithChildren
   '/tools/community': typeof ToolsCommunityRoute
   '/tools/evidence': typeof ToolsEvidenceRoute
   '/tools/patrol': typeof ToolsPatrolRoute
   '/tools/safe-zones': typeof ToolsSafeZonesRoute
   '/tools/sos': typeof ToolsSosRoute
   '/tools/stats': typeof ToolsStatsRoute
+  '/sessions/$id': typeof AuthenticatedSessionsIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/alerts': typeof AlertsRoute
+  '/auth': typeof AuthRoute
   '/home': typeof HomeRoute
   '/map': typeof MapRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
+  '/_authenticated/account': typeof AuthenticatedAccountRoute
+  '/_authenticated/activity': typeof AuthenticatedActivityRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/privacy': typeof AuthenticatedPrivacyRoute
+  '/_authenticated/sessions': typeof AuthenticatedSessionsRouteWithChildren
   '/tools/community': typeof ToolsCommunityRoute
   '/tools/evidence': typeof ToolsEvidenceRoute
   '/tools/patrol': typeof ToolsPatrolRoute
   '/tools/safe-zones': typeof ToolsSafeZonesRoute
   '/tools/sos': typeof ToolsSosRoute
   '/tools/stats': typeof ToolsStatsRoute
+  '/_authenticated/sessions/$id': typeof AuthenticatedSessionsIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/alerts'
+    | '/auth'
     | '/home'
     | '/map'
     | '/profile'
     | '/report'
+    | '/account'
+    | '/activity'
+    | '/admin'
+    | '/privacy'
+    | '/sessions'
     | '/tools/community'
     | '/tools/evidence'
     | '/tools/patrol'
     | '/tools/safe-zones'
     | '/tools/sos'
     | '/tools/stats'
+    | '/sessions/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/alerts'
+    | '/auth'
     | '/home'
     | '/map'
     | '/profile'
     | '/report'
+    | '/account'
+    | '/activity'
+    | '/admin'
+    | '/privacy'
+    | '/sessions'
     | '/tools/community'
     | '/tools/evidence'
     | '/tools/patrol'
     | '/tools/safe-zones'
     | '/tools/sos'
     | '/tools/stats'
+    | '/sessions/$id'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/alerts'
+    | '/auth'
     | '/home'
     | '/map'
     | '/profile'
     | '/report'
+    | '/_authenticated/account'
+    | '/_authenticated/activity'
+    | '/_authenticated/admin'
+    | '/_authenticated/privacy'
+    | '/_authenticated/sessions'
     | '/tools/community'
     | '/tools/evidence'
     | '/tools/patrol'
     | '/tools/safe-zones'
     | '/tools/sos'
     | '/tools/stats'
+    | '/_authenticated/sessions/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AlertsRoute: typeof AlertsRoute
+  AuthRoute: typeof AuthRoute
   HomeRoute: typeof HomeRoute
   MapRoute: typeof MapRoute
   ProfileRoute: typeof ProfileRoute
@@ -195,11 +288,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/alerts': {
       id: '/alerts'
       path: '/alerts'
       fullPath: '/alerts'
       preLoaderRoute: typeof AlertsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/home': {
@@ -229,6 +336,41 @@ declare module '@tanstack/react-router' {
       fullPath: '/report'
       preLoaderRoute: typeof ReportRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/account': {
+      id: '/_authenticated/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AuthenticatedAccountRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/activity': {
+      id: '/_authenticated/activity'
+      path: '/activity'
+      fullPath: '/activity'
+      preLoaderRoute: typeof AuthenticatedActivityRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/privacy': {
+      id: '/_authenticated/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof AuthenticatedPrivacyRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/sessions': {
+      id: '/_authenticated/sessions'
+      path: '/sessions'
+      fullPath: '/sessions'
+      preLoaderRoute: typeof AuthenticatedSessionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/tools/community': {
       id: '/tools/community'
@@ -272,12 +414,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ToolsStatsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/sessions/$id': {
+      id: '/_authenticated/sessions/$id'
+      path: '/$id'
+      fullPath: '/sessions/$id'
+      preLoaderRoute: typeof AuthenticatedSessionsIdRouteImport
+      parentRoute: typeof AuthenticatedSessionsRoute
+    }
   }
 }
 
+interface AuthenticatedSessionsRouteChildren {
+  AuthenticatedSessionsIdRoute: typeof AuthenticatedSessionsIdRoute
+}
+
+const AuthenticatedSessionsRouteChildren: AuthenticatedSessionsRouteChildren = {
+  AuthenticatedSessionsIdRoute: AuthenticatedSessionsIdRoute,
+}
+
+const AuthenticatedSessionsRouteWithChildren =
+  AuthenticatedSessionsRoute._addFileChildren(
+    AuthenticatedSessionsRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAccountRoute: typeof AuthenticatedAccountRoute
+  AuthenticatedActivityRoute: typeof AuthenticatedActivityRoute
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedPrivacyRoute: typeof AuthenticatedPrivacyRoute
+  AuthenticatedSessionsRoute: typeof AuthenticatedSessionsRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAccountRoute: AuthenticatedAccountRoute,
+  AuthenticatedActivityRoute: AuthenticatedActivityRoute,
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedPrivacyRoute: AuthenticatedPrivacyRoute,
+  AuthenticatedSessionsRoute: AuthenticatedSessionsRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AlertsRoute: AlertsRoute,
+  AuthRoute: AuthRoute,
   HomeRoute: HomeRoute,
   MapRoute: MapRoute,
   ProfileRoute: ProfileRoute,
