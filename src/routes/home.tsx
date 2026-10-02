@@ -127,6 +127,12 @@ function HomeScreen() {
             <span className="text-[11px] opacity-90">Tap to alert</span>
           </span>
         </button>
+        <Link
+          to="/track-me"
+          className="glow-neon mt-5 flex w-full items-center justify-center gap-2 rounded-2xl border border-neon bg-neon/15 py-3 font-display text-sm font-bold tracking-widest text-neon"
+        >
+          <Navigation className="h-4 w-4" /> TRACK ME
+        </Link>
         {reports.length ? (
           <p className="mt-3 text-xs text-muted-foreground">
             {reports.length} report{reports.length > 1 ? "s" : ""} submitted from this device
