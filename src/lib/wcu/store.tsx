@@ -1,4 +1,5 @@
 import * as React from "react";
+import type { Attachment } from "./media";
 import { CITIES, type CrimeCategory, type Role } from "./data";
 
 export type Report = {
@@ -6,7 +7,7 @@ export type Report = {
   ref: string;
   category: CrimeCategory;
   description: string;
-  attachments: string[];
+  attachments: Attachment[];
   location: string;
   createdAt: number;
   x: number;
@@ -42,7 +43,15 @@ export function WcuProvider({ children }: { children: React.ReactNode }) {
   React.useEffect(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) setState({ ...defaultState, ...JSON.parse(raw) });
+      if (raw) {
+        const parsed = JSON.parse(raw) as State;
+        // Drop old placeholder attachments that had no real file.
+        parsed.reports = (parsed.reports ?? []).map((r) => ({
+          ...r,
+          attachments: (r.attachments ?? []).filter((a) => typeof a === "object"),
+        }));
+        setState({ ...defaultState, ...parsed });
+      }
     } catch {
       /* ignore corrupt storage */
     }
