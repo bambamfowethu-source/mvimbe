@@ -17,6 +17,7 @@ import { Route as HomeRouteImport } from './routes/home'
 import { Route as MapRouteImport } from './routes/map'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ReportRouteImport } from './routes/report'
+import { Route as TrackMeRouteImport } from './routes/track-me'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedActivityRouteImport } from './routes/_authenticated/activity'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
@@ -67,6 +68,11 @@ const ProfileRoute = ProfileRouteImport.update({
 const ReportRoute = ReportRouteImport.update({
   id: '/report',
   path: '/report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TrackMeRoute = TrackMeRouteImport.update({
+  id: '/track-me',
+  path: '/track-me',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedAccountRoute = AuthenticatedAccountRouteImport.update({
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/map': typeof MapRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
+  '/track-me': typeof TrackMeRoute
   '/account': typeof AuthenticatedAccountRoute
   '/activity': typeof AuthenticatedActivityRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -159,6 +166,7 @@ export interface FileRoutesByTo {
   '/map': typeof MapRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
+  '/track-me': typeof TrackMeRoute
   '/account': typeof AuthenticatedAccountRoute
   '/activity': typeof AuthenticatedActivityRoute
   '/admin': typeof AuthenticatedAdminRoute
@@ -182,6 +190,7 @@ export interface FileRoutesById {
   '/map': typeof MapRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
+  '/track-me': typeof TrackMeRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/activity': typeof AuthenticatedActivityRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
@@ -205,6 +214,7 @@ export interface FileRouteTypes {
     | '/map'
     | '/profile'
     | '/report'
+    | '/track-me'
     | '/account'
     | '/activity'
     | '/admin'
@@ -226,6 +236,7 @@ export interface FileRouteTypes {
     | '/map'
     | '/profile'
     | '/report'
+    | '/track-me'
     | '/account'
     | '/activity'
     | '/admin'
@@ -248,6 +259,7 @@ export interface FileRouteTypes {
     | '/map'
     | '/profile'
     | '/report'
+    | '/track-me'
     | '/_authenticated/account'
     | '/_authenticated/activity'
     | '/_authenticated/admin'
@@ -271,6 +283,7 @@ export interface RootRouteChildren {
   MapRoute: typeof MapRoute
   ProfileRoute: typeof ProfileRoute
   ReportRoute: typeof ReportRoute
+  TrackMeRoute: typeof TrackMeRoute
   ToolsCommunityRoute: typeof ToolsCommunityRoute
   ToolsEvidenceRoute: typeof ToolsEvidenceRoute
   ToolsPatrolRoute: typeof ToolsPatrolRoute
@@ -335,6 +348,13 @@ declare module '@tanstack/react-router' {
       path: '/report'
       fullPath: '/report'
       preLoaderRoute: typeof ReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/track-me': {
+      id: '/track-me'
+      path: '/track-me'
+      fullPath: '/track-me'
+      preLoaderRoute: typeof TrackMeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated/account': {
@@ -465,6 +485,7 @@ const rootRouteChildren: RootRouteChildren = {
   MapRoute: MapRoute,
   ProfileRoute: ProfileRoute,
   ReportRoute: ReportRoute,
+  TrackMeRoute: TrackMeRoute,
   ToolsCommunityRoute: ToolsCommunityRoute,
   ToolsEvidenceRoute: ToolsEvidenceRoute,
   ToolsPatrolRoute: ToolsPatrolRoute,
