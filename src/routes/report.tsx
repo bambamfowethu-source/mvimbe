@@ -19,6 +19,8 @@ import {
 import { AppShell, ScreenHeader } from "@/components/wcu/AppShell";
 import { CRIME_CATEGORIES, type CrimeCategory } from "@/lib/wcu/data";
 import { useWcu } from "@/lib/wcu/store";
+import { kindFromFile, saveMedia, type Attachment } from "@/lib/wcu/media";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/report")({
@@ -57,13 +59,56 @@ function ReportScreen() {
   const [step, setStep] = React.useState(1);
   const [category, setCategory] = React.useState<CrimeCategory | null>(null);
   const [description, setDescription] = React.useState("");
-  const [attachments, setAttachments] = React.useState<string[]>([]);
+  const [attachments, setAttachments] = React.useState<Attachment[]>([]);
+  const [previews, setPreviews] = React.useState<Record<string, string>>({});
+  const [recording, setRecording] = React.useState(false);
+  const recRef = React.useRef<MediaRecorder | null>(null);
+  const photoRef = React.useRef<HTMLInputElement>(null);
+  const videoRef = React.useRef<HTMLInputElement>(null);
   const [location, setLocation] = React.useState(city);
   const [locating, setLocating] = React.useState(false);
   const [ref, setRef] = React.useState<string | null>(null);
 
-  const toggleAttachment = (kind: string) =>
-    setAttachments((a) => (a.includes(kind) ? a.filter((x) => x !== kind) : [...a, kind]));
+  const addBlob = async (blob: Blob, name: string) => {
+    try {
+      const id = await saveMedia(blob);
+      const kind = kindFromFile(blob);
+      setAttachments((a) => [...a, { id, kind, name }]);
+      setPreviews((p) => ({ ...p, [id]: URL.createObjectURL(blob) }));
+      toast.success(`${kind === "Voice" ? "Voice note" : kind} added`);
+    } catch {
+      toast.error("Couldn't save that file on this device");
+    }
+  };
+
+  const onFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    Array.from(e.target.files ?? []).forEach((f) => void addBlob(f, f.name));
+    e.target.value = "";
+  };
+
+  const toggleVoice = async () => {
+    if (recording) {
+      recRef.current?.stop();
+      return;
+    }
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const rec = new MediaRecorder(stream);
+      const chunks: Blob[] = [];
+      rec.ondataavailable = (ev) => chunks.push(ev.data);
+      rec.onstop = () => {
+        stream.getTracks().forEach((t) => t.stop());
+        setRecording(false);
+        const blob = new Blob(chunks, { type: rec.mimeType || "audio/webm" });
+        void addBlob(blob, `Voice note ${new Date().toLocaleTimeString()}`);
+      };
+      recRef.current = rec;
+      rec.start();
+      setRecording(true);
+    } catch {
+      toast.error("Microphone access was blocked — allow it in your browser to record.");
+    }
+  };
 
   const useGps = () => {
     setLocating(true);
@@ -170,30 +215,52 @@ function ReportScreen() {
             className="w-full rounded-2xl border border-border bg-surface/70 p-3 text-sm outline-none focus:border-neon"
           />
           <p className="mt-5 mb-2 text-sm text-muted-foreground">Add evidence</p>
+          <input ref={photoRef} type="file" accept="image/*" capture="environment" multiple hidden onChange={onFiles} />
+          <input ref={videoRef} type="file" accept="video/*" capture="environment" hidden onChange={onFiles} />
           <div className="grid grid-cols-3 gap-3">
             {[
-              { id: "Photo", icon: Camera },
-              { id: "Video", icon: Video },
-              { id: "Voice", icon: Mic },
-            ].map(({ id, icon: Icon }) => {
-              const on = attachments.includes(id);
-              return (
-                <button
-                  key={id}
-                  onClick={() => toggleAttachment(id)}
-                  className={cn(
-                    "flex h-24 flex-col items-center justify-center gap-2 rounded-2xl border bg-surface/70",
-                    on ? "border-neon text-neon" : "border-border text-foreground/80",
-                  )}
-                >
-                  <Icon className="h-6 w-6" />
-                  <span className="text-xs font-semibold">{on ? `${id} added` : id}</span>
-                </button>
-              );
-            })}
+              { id: "Photo", icon: Camera, label: "Photo", onClick: () => photoRef.current?.click() },
+              { id: "Video", icon: Video, label: "Video", onClick: () => videoRef.current?.click() },
+              { id: "Voice", icon: Mic, label: recording ? "Stop ●" : "Voice", onClick: toggleVoice },
+            ].map(({ id, icon: Icon, label, onClick }) => (
+              <button
+                key={id}
+                type="button"
+                onClick={onClick}
+                className={cn(
+                  "flex h-24 flex-col items-center justify-center gap-2 rounded-2xl border bg-surface/70",
+                  id === "Voice" && recording ? "border-alert text-alert animate-pulse" : "border-border text-foreground/80",
+                )}
+              >
+                <Icon className="h-6 w-6" />
+                <span className="text-xs font-semibold">{label}</span>
+              </button>
+            ))}
           </div>
+          {attachments.length ? (
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              {attachments.map((a) => (
+                <div key={a.id} className="overflow-hidden rounded-xl border border-border bg-surface/70">
+                  {a.kind === "Photo" ? (
+                    <img src={previews[a.id]} alt={a.name} className="h-20 w-full object-cover" />
+                  ) : a.kind === "Video" ? (
+                    <video src={previews[a.id]} className="h-20 w-full object-cover" muted />
+                  ) : (
+                    <div className="grid h-20 place-items-center text-neon"><Mic className="h-6 w-6" /></div>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => setAttachments((x) => x.filter((y) => y.id !== a.id))}
+                    className="w-full py-1 text-[10px] text-muted-foreground"
+                  >
+                    Remove
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : null}
           <p className="mt-3 text-xs text-muted-foreground">
-            Evidence capture is simulated in this preview — nothing is uploaded.
+            Files are saved securely on this device and appear in your Evidence Vault.
           </p>
         </>
       ) : null}
@@ -221,7 +288,7 @@ function ReportScreen() {
             <div className="flex justify-between gap-3">
               <span className="text-muted-foreground">Evidence</span>
               <span className="truncate font-semibold">
-                {attachments.length ? attachments.join(", ") : "None"}
+                {attachments.length ? `${attachments.length} file${attachments.length > 1 ? "s" : ""}` : "None"}
               </span>
             </div>
             <div className="flex justify-between gap-3">

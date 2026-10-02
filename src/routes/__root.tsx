@@ -6,6 +6,7 @@ import {
   useRouter,
   HeadContent,
   Scripts,
+  type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
@@ -36,7 +37,7 @@ function NotFoundComponent() {
   );
 }
 
-function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   console.error(error);
   const router = useRouter();
   useEffect(() => {
@@ -80,10 +81,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "World Crime Unicorn" },
-      { name: "description", content: "Community safety and municipal field reporting." },
+      { name: "description", content: "Community safety, live crime maps, Track Me and instant crime reporting." },
       { name: "author", content: "World Crime Unicorn" },
       { property: "og:title", content: "World Crime Unicorn" },
-      { property: "og:description", content: "Community safety and municipal field reporting." },
+      { property: "og:description", content: "Community safety, live crime maps, Track Me and instant crime reporting." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
