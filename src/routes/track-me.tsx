@@ -46,7 +46,10 @@ function TrackMe() {
   const phones = contacts.map((c) => c.phone.trim()).filter(Boolean);
 
   const start = () => {
-    if (!("geolocation" in navigator)) return toast.error("This device can't share location.");
+    if (!("geolocation" in navigator)) {
+      toast.error("This device can't share location.");
+      return;
+    }
     setTracking(true);
     setSent(false);
     watch.current = navigator.geolocation.watchPosition(
