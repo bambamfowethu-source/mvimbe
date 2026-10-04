@@ -6,6 +6,7 @@ import {
   Brain,
   ChevronDown,
   FolderLock,
+  HardHat,
   MapPin,
   Navigation,
   ShieldCheck,
@@ -38,6 +39,7 @@ export const Route = createFileRoute("/home")({
 });
 
 const ACTIONS = [
+  { to: "/mine", label: "MINE", icon: HardHat, tone: "warn", roles: ["citizen", "patroller", "police", "security"] },
   { to: "/map", label: "Live Map", icon: MapPin, tone: "electric", roles: ["citizen", "patroller", "police", "security"] },
   { to: "/alerts", label: "AI Alerts", icon: Brain, tone: "violet", roles: ["citizen", "patroller", "police", "security"] },
   { to: "/tools/patrol", label: "Patrol Tools", icon: Navigation, tone: "neon", roles: ["patroller", "security"] },
@@ -54,6 +56,7 @@ const toneClass: Record<string, string> = {
   neon: "bg-neon/20 text-neon",
   safe: "bg-safe/20 text-safe",
   alert: "bg-alert/20 text-alert",
+  warn: "bg-warn/20 text-warn",
 };
 
 function HomeScreen() {

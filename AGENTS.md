@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep mine-safety provider actions as explicit client-side simulations until real control-room integrations are supplied, so demos never imply an external alert was delivered.

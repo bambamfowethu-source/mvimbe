@@ -29,9 +29,12 @@ function Account() {
     const { error } = s && s !== "rejected"
       ? await supabase.rpc("drop_my_role", { _role: r })
       : await supabase.rpc("request_role", { _role: r });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success(s && s !== "rejected" ? "Role removed" : ROLE_INFO.find((x) => x.id === r)?.restricted ? "Request sent for admin approval" : "Role added");
-    qc.invalidateQueries({ queryKey: ["my-roles"] });
+    await qc.invalidateQueries({ queryKey: ["my-roles"] });
   };
 
   const signOut = async (global: boolean) => {

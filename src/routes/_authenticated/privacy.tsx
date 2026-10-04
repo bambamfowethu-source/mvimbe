@@ -25,9 +25,12 @@ function Privacy() {
     const { error } = c
       ? await supabase.from("consents").update({ withdrawn_at: new Date().toISOString() }).eq("id", c.id)
       : await supabase.from("consents").insert({ user_id: user.id, scope: s, policy_version: POLICY_VERSION });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success(c ? "Permission withdrawn" : "Consent recorded");
-    qc.invalidateQueries({ queryKey: ["consents"] });
+    await qc.invalidateQueries({ queryKey: ["consents"] });
   };
 
   return (

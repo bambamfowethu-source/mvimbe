@@ -45,9 +45,12 @@ function Sessions() {
   const del = async (id: string) => {
     if (!confirm("Permanently delete this session's location history? This can't be undone.")) return;
     const { error } = await supabase.rpc("delete_my_session", { _sid: id });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Session deleted");
-    qc.invalidateQueries({ queryKey: ["sessions"] });
+    await qc.invalidateQueries({ queryKey: ["sessions"] });
   };
 
   const field = "w-full rounded-2xl border border-border bg-surface-2/60 px-3 py-3 text-sm";
