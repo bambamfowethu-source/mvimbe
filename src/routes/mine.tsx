@@ -161,6 +161,7 @@ const toneClass: Record<Tone, string> = {
 function MineScreen() {
   const [selected, setSelected] = React.useState<Solution | null>(null);
   const [tested, setTested] = React.useState<string[]>([]);
+  const SelectedIcon = selected?.icon;
 
   const runTest = (solution: Solution) => {
     setTested((items) => (items.includes(solution.id) ? items : [...items, solution.id]));
@@ -226,11 +227,11 @@ function MineScreen() {
 
       <Dialog open={selected !== null} onOpenChange={(open) => !open && setSelected(null)}>
         <DialogContent className="glass w-[calc(100%-2rem)] rounded-2xl border-border p-5">
-          {selected ? (
+          {selected && SelectedIcon ? (
             <>
               <DialogHeader className="text-left">
                 <span className={cn("mb-2 grid h-11 w-11 place-items-center rounded-xl border", toneClass[selected.tone])}>
-                  <selected.icon className="h-5 w-5" />
+                  <SelectedIcon className="h-5 w-5" />
                 </span>
                 <DialogTitle>{selected.title}</DialogTitle>
                 <DialogDescription>{selected.detail}</DialogDescription>

@@ -15,6 +15,7 @@ import { Route as AlertsRouteImport } from './routes/alerts'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as HomeRouteImport } from './routes/home'
 import { Route as MapRouteImport } from './routes/map'
+import { Route as MineRouteImport } from './routes/mine'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as TrackMeRouteImport } from './routes/track-me'
@@ -58,6 +59,11 @@ const HomeRoute = HomeRouteImport.update({
 const MapRoute = MapRouteImport.update({
   id: '/map',
   path: '/map',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MineRoute = MineRouteImport.update({
+  id: '/mine',
+  path: '/mine',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
@@ -142,6 +148,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/home': typeof HomeRoute
   '/map': typeof MapRoute
+  '/mine': typeof MineRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
   '/track-me': typeof TrackMeRoute
@@ -164,6 +171,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/home': typeof HomeRoute
   '/map': typeof MapRoute
+  '/mine': typeof MineRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
   '/track-me': typeof TrackMeRoute
@@ -188,6 +196,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/home': typeof HomeRoute
   '/map': typeof MapRoute
+  '/mine': typeof MineRoute
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
   '/track-me': typeof TrackMeRoute
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/home'
     | '/map'
+    | '/mine'
     | '/profile'
     | '/report'
     | '/track-me'
@@ -234,6 +244,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/home'
     | '/map'
+    | '/mine'
     | '/profile'
     | '/report'
     | '/track-me'
@@ -257,6 +268,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/home'
     | '/map'
+    | '/mine'
     | '/profile'
     | '/report'
     | '/track-me'
@@ -281,6 +293,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   HomeRoute: typeof HomeRoute
   MapRoute: typeof MapRoute
+  MineRoute: typeof MineRoute
   ProfileRoute: typeof ProfileRoute
   ReportRoute: typeof ReportRoute
   TrackMeRoute: typeof TrackMeRoute
@@ -334,6 +347,13 @@ declare module '@tanstack/react-router' {
       path: '/map'
       fullPath: '/map'
       preLoaderRoute: typeof MapRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mine': {
+      id: '/mine'
+      path: '/mine'
+      fullPath: '/mine'
+      preLoaderRoute: typeof MineRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/profile': {
@@ -483,6 +503,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   HomeRoute: HomeRoute,
   MapRoute: MapRoute,
+  MineRoute: MineRoute,
   ProfileRoute: ProfileRoute,
   ReportRoute: ReportRoute,
   TrackMeRoute: TrackMeRoute,
