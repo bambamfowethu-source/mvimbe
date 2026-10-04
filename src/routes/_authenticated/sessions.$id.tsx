@@ -84,19 +84,28 @@ function SessionView() {
   const stop = async () => {
     setSharing(false);
     const { error } = await supabase.from("location_sessions").update({ ended_at: new Date().toISOString() }).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success("Sharing stopped — viewers no longer have access");
-    qc.invalidateQueries({ queryKey: ["session", id] });
+    await qc.invalidateQueries({ queryKey: ["session", id] });
   };
 
   const addViewer = async (e: React.FormEvent) => {
     e.preventDefault();
     const { data, error } = await supabase.rpc("add_session_viewer", { _sid: id, _email: viewerEmail });
-    if (error) return toast.error(error.message);
-    if (!data) return toast.error("No account found with that email");
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    if (!data) {
+      toast.error("No account found with that email");
+      return;
+    }
     toast.success("Viewer added");
     setViewerEmail("");
-    qc.invalidateQueries({ queryKey: ["viewers", id] });
+    await qc.invalidateQueries({ queryKey: ["viewers", id] });
   };
 
   const removeViewer = async (vid: string) => {

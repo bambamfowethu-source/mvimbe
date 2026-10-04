@@ -34,20 +34,29 @@ function Admin() {
 
   const setRole = async (user: string, role: AppRole, status: "approved" | "rejected") => {
     const { error } = await supabase.rpc("admin_set_role", { _user: user, _role: role, _status: status });
-    if (error) return toast.error(error.message);
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
     toast.success(status === "approved" ? "Approved" : "Declined");
-    qc.invalidateQueries({ queryKey: ["admin"] });
+    await qc.invalidateQueries({ queryKey: ["admin"] });
   };
   const remove = async (user: string, role: AppRole) => {
     const { error } = await supabase.rpc("admin_remove_role", { _user: user, _role: role });
-    if (error) return toast.error(error.message);
-    qc.invalidateQueries({ queryKey: ["admin"] });
+    if (error) {
+      toast.error(error.message);
+      return;
+    }
+    await qc.invalidateQueries({ queryKey: ["admin"] });
   };
-  const assign = (e: React.FormEvent) => {
+  const assign = async (e: React.FormEvent) => {
     e.preventDefault();
     const p = data.data?.profiles.find((x) => x.email?.toLowerCase() === email.trim().toLowerCase());
-    if (!p) return toast.error("No user with that email");
-    setRole(p.id, newRole, "approved");
+    if (!p) {
+      toast.error("No user with that email");
+      return;
+    }
+    await setRole(p.id, newRole, "approved");
   };
 
   if (data.error) return <AppShell><ScreenHeader title="Admin" /><p className="text-sm text-muted-foreground">Admins only.</p></AppShell>;
