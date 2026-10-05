@@ -32,7 +32,10 @@ export const Route = createFileRoute("/clock-in")({
 const MODEL_URL = "https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model/";
 type Pt = { x: number; y: number };
 const dist = (a: Pt, b: Pt) => Math.hypot(a.x - b.x, a.y - b.y);
-const ear = (p: Pt[]) => (dist(p[1], p[5]) + dist(p[2], p[4])) / (2 * dist(p[0], p[3]));
+const ear = (p: Pt[]) => {
+  const [a, b, c, d, e, f] = p as [Pt, Pt, Pt, Pt, Pt, Pt];
+  return (dist(b, f) + dist(c, e)) / (2 * dist(a, d));
+};
 
 function ClockIn() {
   const videoRef = React.useRef<HTMLVideoElement>(null);
@@ -99,7 +102,7 @@ function ClockIn() {
                 if (!s.blinked) { s.blinked = true; setBlinked(true); }
               }
               if (s.blinked) {
-                const ny = (pts[30].y - b.y) / b.height;
+                const ny = ((pts[30]?.y ?? 0) - b.y) / b.height;
                 s.noseMin = Math.min(s.noseMin, ny);
                 s.noseMax = Math.max(s.noseMax, ny);
                 if (!s.nodded && s.noseMax - s.noseMin > 0.08) { s.nodded = true; setNodded(true); }
