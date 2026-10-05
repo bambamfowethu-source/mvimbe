@@ -9,6 +9,7 @@ import {
   HardHat,
   MapPin,
   Navigation,
+  ScanFace,
   ShieldCheck,
   Siren,
   Users,
@@ -39,6 +40,7 @@ export const Route = createFileRoute("/home")({
 });
 
 const ACTIONS = [
+  { to: "/clock-in", label: "Clock In", icon: ScanFace, tone: "neon", roles: ["patroller", "security"] },
   { to: "/mine", label: "MINE", icon: HardHat, tone: "warn", roles: ["citizen", "patroller", "police", "security"] },
   { to: "/map", label: "Live Map", icon: MapPin, tone: "electric", roles: ["citizen", "patroller", "police", "security"] },
   { to: "/alerts", label: "AI Alerts", icon: Brain, tone: "violet", roles: ["citizen", "patroller", "police", "security"] },
