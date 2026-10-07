@@ -9,6 +9,7 @@ import {
   HardHat,
   MapPin,
   Navigation,
+  Radar,
   ScanFace,
   ShieldCheck,
   Siren,
@@ -41,6 +42,7 @@ export const Route = createFileRoute("/home")({
 
 const ACTIONS = [
   { to: "/clock-in", label: "Clock In", icon: ScanFace, tone: "neon", roles: ["patroller", "security"] },
+  { to: "/security", label: "Guard Tracking", icon: Radar, tone: "electric", roles: ["security"] },
   { to: "/mine", label: "MINE", icon: HardHat, tone: "warn", roles: ["citizen", "patroller", "police", "security"] },
   { to: "/map", label: "Live Map", icon: MapPin, tone: "electric", roles: ["citizen", "patroller", "police", "security"] },
   { to: "/alerts", label: "AI Alerts", icon: Brain, tone: "violet", roles: ["citizen", "patroller", "police", "security"] },
@@ -68,7 +70,7 @@ function HomeScreen() {
   const roleLabel = ROLES.find((r) => r.id === role)?.label ?? "Citizen";
   const activeRole = role ?? "citizen";
   const forRole = ACTIONS.filter((a) => (a.roles as readonly string[]).includes(activeRole));
-  const others = ACTIONS.filter((a) => !(a.roles as readonly string[]).includes(activeRole));
+  const others = ACTIONS.filter((a) => !(a.roles as readonly string[]).includes(activeRole) && a.to !== "/security");
 
   return (
     <AppShell>
