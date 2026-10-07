@@ -7,6 +7,7 @@ import {
   FolderLock,
   Globe,
   Navigation,
+  Radar,
   ShieldCheck,
   Siren,
   Users,
@@ -89,6 +90,13 @@ function ProfileScreen() {
         TOOLS
       </h2>
       <div className="glass divide-y divide-border/70 overflow-hidden rounded-2xl">
+        {role === "security" ? (
+          <Link to="/security" className="flex items-center gap-3 px-4 py-3">
+            <Radar className="h-4.5 w-4.5 shrink-0 text-neon" />
+            <span className="min-w-0 flex-1 truncate text-sm font-semibold">Guard Tracking</span>
+            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+          </Link>
+        ) : null}
         {TOOLS.map(({ to, label, icon: Icon }) => (
           <Link key={to} to={to} className="flex items-center gap-3 px-4 py-3">
             <Icon className="h-4.5 w-4.5 shrink-0 text-neon" />

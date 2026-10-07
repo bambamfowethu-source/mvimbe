@@ -321,7 +321,7 @@ function ControlRoom({ guards, alerts, testing, startTest, stopTest, endShift, s
       <div className="glass divide-y divide-border/70 overflow-hidden rounded-2xl">
         {alerts.length ? alerts.map((a) => (
           <div key={a.id} className="flex items-start gap-2 px-3 py-2 text-xs">
-            <AlertTriangle className={cn("mt-0.5 h-3.5 w-3.5 shrink-0", `text-${a.tone}`)} />
+            <AlertTriangle className={cn("mt-0.5 h-3.5 w-3.5 shrink-0", {alert:"text-alert",warn:"text-warn",safe:"text-safe",electric:"text-electric"}[a.tone])} />
             <span className="min-w-0 flex-1">{a.text}</span>
             <span className="shrink-0 text-muted-foreground">{new Date(a.at).toLocaleTimeString()}</span>
           </div>
