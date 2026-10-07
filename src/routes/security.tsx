@@ -90,12 +90,12 @@ function SecurityPage() {
     if (notify) (tone === "alert" || tone === "warn" ? toast.warning : toast.success)(text);
   }, []);
 
-  const upsert = React.useCallback((g: Partial<Guard> & { id: string }) => {
+  const upsert = React.useCallback((g: Guard) => {
     setGuards((list) => {
       const i = list.findIndex((x) => x.id === g.id);
-      if (i < 0) return [...list, g as Guard];
+      if (i < 0) return [...list, g];
       const copy = [...list];
-      copy[i] = { ...copy[i], ...g };
+      copy[i] = g;
       return copy;
     });
   }, []);
@@ -121,8 +121,9 @@ function SecurityPage() {
     const start = Date.now();
     const names: Record<string, string> = { g1: "Test Guard Sipho", g2: "Test Guard Lerato", g3: "Test Guard Thabo" };
     Object.keys(ROUTES).forEach((id) => {
-      const p = off(...ROUTES[id][0]);
-      upsert({ id, name: names[id], onDuty: true, ...p, speed: 0, heading: 0, battery: 90, signal: "Good", lastMovedAt: start, lastSeen: start, source: "test" });
+      const first = ROUTES[id]![0]!;
+      const p = off(first[0], first[1]);
+      upsert({ id, name: names[id] ?? id, onDuty: true, ...p, speed: 0, heading: 0, battery: 90, signal: "Good", lastMovedAt: start, lastSeen: start, source: "test" });
     });
     pushAlert("electric", "Test mode started — 3 simulated guard devices streaming", false);
     let tick = 0;
@@ -132,10 +133,10 @@ function SecurityPage() {
       setGuards((list) =>
         list.map((g) => {
           if (g.source !== "test" || !g.onDuty) return g;
-          const route = ROUTES[g.id];
+          const route = ROUTES[g.id]!;
           const seg = Math.min(route.length - 1, Math.floor(tick / 3));
-          const next = route[Math.min(route.length - 1, seg + 1)];
-          const cur = route[seg];
+          const next = route[Math.min(route.length - 1, seg + 1)]!;
+          const cur = route[seg]!;
           const f = (tick % 3) / 3;
           const p = off(cur[0] + (next[0] - cur[0]) * f, cur[1] + (next[1] - cur[1]) * f);
           const moved = distanceM(g.lat, g.lng, p.lat, p.lng);
@@ -338,7 +339,7 @@ function ControlRoom({ guards, alerts, testing, startTest, stopTest, endShift, s
 // ------------------------------------------------------------------ Guard Device
 function GuardDevice({ user, upsert, remove, pushAlert }: {
   user: { id: string; email?: string } | null;
-  upsert: (g: Partial<Guard> & { id: string }) => void;
+  upsert: (g: Guard) => void;
   remove: (id: string) => void;
   pushAlert: (t: AlertItem["tone"], s: string, n?: boolean) => void;
 }) {
