@@ -56,9 +56,14 @@ function ProfileScreen() {
       <ScreenHeader title="Profile" subtitle={city} />
 
       <div className="glass flex items-center gap-3 rounded-3xl p-4">
-        <span className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl bg-electric/15">
-          <UnicornShield className="h-10 w-9" />
-        </span>
+        <img
+          src="/icon-192.png"
+          alt="World Crime Unicorn Badge"
+          width={56}
+          height={56}
+          className="h-14 w-14 shrink-0 rounded-2xl border border-neon/40 object-cover shadow-lg"
+          referrerPolicy="no-referrer"
+        />
         <div className="min-w-0">
           <p className="truncate font-display text-base font-bold">Community Hero</p>
           <p className="truncate text-xs text-muted-foreground">
@@ -76,8 +81,8 @@ function ProfileScreen() {
             key={r.id}
             onClick={() => setRole(r.id as Role)}
             className={cn(
-              "rounded-2xl border bg-surface/70 p-3 text-left",
-              role === r.id ? "border-neon glow-neon" : "border-border",
+              "rounded-2xl border bg-surface/70 p-3 text-left transition hover:border-neon/50",
+              role === r.id ? "border-neon glow-neon bg-neon/10" : "border-border",
             )}
           >
             <span className="block text-sm font-semibold">{r.label}</span>
@@ -90,13 +95,12 @@ function ProfileScreen() {
         TOOLS
       </h2>
       <div className="glass divide-y divide-border/70 overflow-hidden rounded-2xl">
-        {role === "security" ? (
-          <Link to="/security" className="flex items-center gap-3 px-4 py-3">
-            <Radar className="h-4.5 w-4.5 shrink-0 text-neon" />
-            <span className="min-w-0 flex-1 truncate text-sm font-semibold">Guard Tracking</span>
-            <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
-          </Link>
-        ) : null}
+        <Link to="/security" className="flex items-center gap-3 px-4 py-3">
+          <Radar className="h-4.5 w-4.5 shrink-0 text-electric" />
+          <span className="min-w-0 flex-1 truncate text-sm font-semibold">Guard Tracking & Control Room</span>
+          <span className="rounded-full bg-electric/20 px-2 py-0.5 text-[10px] font-bold text-electric">Security</span>
+          <ChevronRight className="h-4 w-4 shrink-0 text-muted-foreground" />
+        </Link>
         {TOOLS.map(({ to, label, icon: Icon }) => (
           <Link key={to} to={to} className="flex items-center gap-3 px-4 py-3">
             <Icon className="h-4.5 w-4.5 shrink-0 text-neon" />

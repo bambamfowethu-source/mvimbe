@@ -64,9 +64,19 @@ function Splash() {
       />
 
       <div className="relative mx-auto flex min-h-screen w-full max-w-md flex-col items-center px-6 pt-16 pb-10 text-center">
-        <UnicornShield className="h-32 w-28 drop-shadow-[0_0_28px_color-mix(in_oklab,var(--electric)_60%,transparent)]" />
+        <div className="relative mb-2">
+          <div className="absolute -inset-2 rounded-3xl bg-gradient-to-r from-neon via-electric to-violet opacity-60 blur-xl animate-pulse" />
+          <img
+            src="/icon-192.png"
+            alt="World Crime Unicorn Emblem"
+            width={112}
+            height={112}
+            className="relative h-28 w-28 rounded-3xl border border-neon/50 shadow-2xl object-cover"
+            referrerPolicy="no-referrer"
+          />
+        </div>
 
-        <h1 className="mt-6 font-display text-3xl leading-tight font-black tracking-wider">
+        <h1 className="mt-5 font-display text-3xl leading-tight font-black tracking-wider">
           <span className="block text-foreground">WORLD CRIME</span>
           <span className="text-gradient-brand block text-4xl">UNICORN</span>
         </h1>
