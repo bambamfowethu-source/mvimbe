@@ -8,6 +8,7 @@ import {
   FolderLock,
   HardHat,
   MapPin,
+  MessageCircle,
   Navigation,
   Radar,
   ScanFace,
@@ -43,11 +44,11 @@ export const Route = createFileRoute("/home")({
 const ACTIONS = [
   { to: "/clock-in", label: "Clock In", icon: ScanFace, tone: "neon", roles: ["patroller", "security"] },
   { to: "/security", label: "Guard Tracking", icon: Radar, tone: "electric", roles: ["security"] },
-  { to: "/mine", label: "MINE", icon: HardHat, tone: "warn", roles: ["citizen", "patroller", "police", "security"] },
+  { to: "/mine", label: "MINE Safety", icon: HardHat, tone: "warn", roles: ["citizen", "patroller", "police", "security"] },
   { to: "/map", label: "Live Map", icon: MapPin, tone: "electric", roles: ["citizen", "patroller", "police", "security"] },
+  { to: "/tools/community", label: "Global Chat", icon: MessageCircle, tone: "neon", roles: ["citizen", "patroller", "police", "security"] },
   { to: "/alerts", label: "AI Alerts", icon: Brain, tone: "violet", roles: ["citizen", "patroller", "police", "security"] },
   { to: "/tools/patrol", label: "Patrol Tools", icon: Navigation, tone: "neon", roles: ["patroller", "security"] },
-  { to: "/tools/community", label: "Community", icon: Users, tone: "electric", roles: ["citizen"] },
   { to: "/tools/safe-zones", label: "Safe Zones", icon: ShieldCheck, tone: "safe", roles: ["citizen"] },
   { to: "/tools/sos", label: "Emergency SOS", icon: Siren, tone: "alert", roles: ["citizen", "patroller"] },
   { to: "/tools/evidence", label: "Evidence Vault", icon: FolderLock, tone: "violet", roles: ["police", "security"] },
@@ -70,7 +71,7 @@ function HomeScreen() {
   const roleLabel = ROLES.find((r) => r.id === role)?.label ?? "Citizen";
   const activeRole = role ?? "citizen";
   const forRole = ACTIONS.filter((a) => (a.roles as readonly string[]).includes(activeRole));
-  const others = ACTIONS.filter((a) => !(a.roles as readonly string[]).includes(activeRole) && a.to !== "/security");
+  const others = ACTIONS.filter((a) => !(a.roles as readonly string[]).includes(activeRole));
 
   return (
     <AppShell>
@@ -82,10 +83,17 @@ function HomeScreen() {
         </div>
         <Link
           to="/profile"
-          className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-border bg-surface"
+          className="relative h-11 w-11 shrink-0 overflow-hidden rounded-2xl border border-neon/40 shadow-sm transition hover:scale-105"
           aria-label="Open profile"
         >
-          <UnicornShield className="h-7 w-6" />
+          <img
+            src="/icon-192.png"
+            alt="World Crime Unicorn Avatar"
+            width={44}
+            height={44}
+            className="h-full w-full object-cover"
+            referrerPolicy="no-referrer"
+          />
         </Link>
       </header>
 

@@ -67,6 +67,7 @@ function ReportScreen() {
   const videoRef = React.useRef<HTMLInputElement>(null);
   const [location, setLocation] = React.useState(city);
   const [locating, setLocating] = React.useState(false);
+  const [gpsCoords, setGpsCoords] = React.useState<{ lat: number; lng: number } | null>(null);
   const [ref, setRef] = React.useState<string | null>(null);
 
   const addBlob = async (blob: Blob, name: string) => {
@@ -110,25 +111,50 @@ function ReportScreen() {
     }
   };
 
+  React.useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setLocation(`${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)} (±${Math.round(pos.coords.accuracy)}m)`);
+          setGpsCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+        },
+        () => {},
+        { enableHighAccuracy: true, timeout: 8000, maximumAge: 0 }
+      );
+    }
+  }, []);
+
   const useGps = () => {
     setLocating(true);
     if (!("geolocation" in navigator)) {
       setLocating(false);
+      toast.error("Location services unavailable on this device.");
       return;
     }
     navigator.geolocation.getCurrentPosition(
       (pos) => {
-        setLocation(`${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}`);
+        setLocation(`${pos.coords.latitude.toFixed(5)}, ${pos.coords.longitude.toFixed(5)} (±${Math.round(pos.coords.accuracy)}m)`);
+        setGpsCoords({ lat: pos.coords.latitude, lng: pos.coords.longitude });
         setLocating(false);
+        toast.success(`Locked GPS: ±${Math.round(pos.coords.accuracy)}m accuracy`);
       },
-      () => setLocating(false),
-      { timeout: 8000 },
+      (err) => {
+        setLocating(false);
+        toast.error(`GPS Error: ${err.message}. Please enable location permissions.`);
+      },
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 0 },
     );
   };
 
   const submit = () => {
     if (!category) return;
-    const report = addReport({ category, description, attachments, location });
+    const report = addReport({
+      category,
+      description,
+      attachments,
+      location,
+      ...(gpsCoords ? { lat: gpsCoords.lat, lng: gpsCoords.lng } : {}),
+    });
     setRef(report.ref);
   };
 

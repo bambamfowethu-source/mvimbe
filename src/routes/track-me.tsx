@@ -1,6 +1,6 @@
 import * as React from "react";
-import { createFileRoute } from "@tanstack/react-router";
-import { CheckCircle2, LocateFixed, MessageCircle, Navigation, Phone, ShieldAlert, Users } from "lucide-react";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { CheckCircle2, Compass, LocateFixed, MapPin, MessageCircle, Navigation, Phone, ShieldAlert, Users } from "lucide-react";
 import { toast } from "sonner";
 import { AppShell, ScreenHeader } from "@/components/wcu/AppShell";
 import { cn } from "@/lib/utils";
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/track-me")({
 
 type Contact = { name: string; phone: string };
 const KEY = "wcu-contacts-v1";
-type Pos = { lat: number; lng: number; acc: number };
+type Pos = { lat: number; lng: number; acc: number; speed?: number | null; heading?: number | null };
 
 function TrackMe() {
   const [contacts, setContacts] = React.useState<Contact[]>([{ name: "", phone: "" }, { name: "", phone: "" }, { name: "", phone: "" }]);
@@ -54,11 +54,17 @@ function TrackMe() {
     setSent(false);
     watch.current = navigator.geolocation.watchPosition(
       (p) => {
-        const next = { lat: p.coords.latitude, lng: p.coords.longitude, acc: Math.round(p.coords.accuracy) };
+        const next: Pos = {
+          lat: p.coords.latitude,
+          lng: p.coords.longitude,
+          acc: Math.round(p.coords.accuracy),
+          speed: p.coords.speed,
+          heading: p.coords.heading,
+        };
         setPos((prev) => {
           if (!prev) {
             setSent(true);
-            toast.success("Location found — police and patrols alerted");
+            toast.success("Location locked — police and patrols alerted");
           }
           return next;
         });
@@ -67,7 +73,7 @@ function TrackMe() {
         setTracking(false);
         toast.error("Location access was blocked — allow it in your browser and try again.");
       },
-      { enableHighAccuracy: true, timeout: 15000 },
+      { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 },
     );
   };
 
@@ -82,35 +88,53 @@ function TrackMe() {
 
   return (
     <AppShell>
-      <ScreenHeader title="Track Me" subtitle="Share where you are, instantly" back="/home" />
+      <ScreenHeader
+        title="Track Me"
+        subtitle="Share where you are, instantly"
+        back="/home"
+        right={
+          <Link
+            to="/map"
+            className="flex items-center gap-1 rounded-full border border-neon/40 bg-neon/10 px-3 py-1 text-xs font-semibold text-neon"
+          >
+            <MapPin className="h-3 w-3" /> Map
+          </Link>
+        }
+      />
 
       <div className="flex flex-col items-center">
-        <button onClick={tracking ? stop : start} className="relative grid h-40 w-40 place-items-center rounded-full" aria-label="Track me">
+        <button onClick={tracking ? stop : start} className="relative grid h-44 w-44 place-items-center rounded-full" aria-label="Track me">
           {tracking ? <span className="animate-pulse-ring absolute inset-0 rounded-full border-2 border-neon" /> : null}
-          <span className={cn("absolute inset-3 rounded-full", tracking ? "bg-neon glow-neon" : "bg-gradient-to-b from-electric to-violet glow-electric")} />
+          <span className={cn("absolute inset-3 rounded-full transition-colors", tracking ? "bg-neon glow-neon" : "bg-gradient-to-b from-electric to-violet glow-electric")} />
           <span className="relative flex flex-col items-center gap-1 text-background">
-            <LocateFixed className="h-8 w-8" />
-            <span className="font-display text-sm font-black tracking-widest">{tracking ? "STOP" : "TRACK ME"}</span>
+            <LocateFixed className="h-9 w-9" />
+            <span className="font-display text-sm font-black tracking-widest">{tracking ? "STOP TRACKING" : "START TRACK ME"}</span>
+            <span className="text-[10px] opacity-80">{tracking ? "Broadcasting live" : "High-accuracy GPS"}</span>
           </span>
         </button>
       </div>
 
       {pos ? (
-        <div className="mt-5 overflow-hidden rounded-3xl border border-neon/50">
+        <div className="mt-5 overflow-hidden rounded-3xl border border-neon/50 shadow-xl">
           <iframe
             title="Your location on Google Maps"
             src={`https://maps.google.com/maps?q=${pos.lat},${pos.lng}&z=17&output=embed`}
             className="h-72 w-full"
             loading="lazy"
           />
-          <div className="glass flex items-center gap-3 p-3 text-xs">
-            <Navigation className="h-4 w-4 shrink-0 text-neon" />
-            <span className="min-w-0 flex-1 truncate">{pos.lat.toFixed(5)}, {pos.lng.toFixed(5)} · ±{pos.acc} m</span>
-            <a href={mapsLink} target="_blank" rel="noreferrer" className="shrink-0 font-semibold text-neon">Open Maps</a>
+          <div className="glass flex flex-wrap items-center justify-between gap-2 p-3 text-xs">
+            <div className="flex items-center gap-2">
+              <Navigation className="h-4 w-4 shrink-0 text-neon" />
+              <span className="font-mono font-medium">{pos.lat.toFixed(5)}, {pos.lng.toFixed(5)} · ±{pos.acc} m</span>
+            </div>
+            <div className="flex items-center gap-3">
+              <Link to="/map" className="font-semibold text-neon hover:underline">See Crime Map</Link>
+              <a href={mapsLink} target="_blank" rel="noreferrer" className="font-semibold text-electric hover:underline">Google Maps</a>
+            </div>
           </div>
         </div>
       ) : tracking ? (
-        <p className="mt-5 text-center text-sm text-muted-foreground">Finding your location…</p>
+        <p className="mt-5 text-center text-sm text-neon animate-pulse">Acquiring high-accuracy satellite lock…</p>
       ) : null}
 
       {sent ? (
@@ -122,11 +146,11 @@ function TrackMe() {
           <div className="grid grid-cols-2 gap-2">
             <a href={phones.length ? `sms:${phones.join(",")}?&body=${encodeURIComponent(message)}` : undefined}
               onClick={() => !phones.length && toast.error("Add at least one emergency contact below")}
-              className="flex items-center justify-center gap-2 rounded-2xl bg-alert py-3 text-sm font-bold text-alert-foreground">
+              className="flex items-center justify-center gap-2 rounded-2xl bg-alert py-3 text-sm font-bold text-alert-foreground shadow transition active:scale-95">
               <Phone className="h-4 w-4" /> SMS all
             </a>
             <a href={`https://wa.me/?text=${encodeURIComponent(message)}`} target="_blank" rel="noreferrer"
-              className="flex items-center justify-center gap-2 rounded-2xl border border-safe py-3 text-sm font-bold text-safe">
+              className="flex items-center justify-center gap-2 rounded-2xl border border-safe py-3 text-sm font-bold text-safe transition active:scale-95">
               <MessageCircle className="h-4 w-4" /> WhatsApp
             </a>
           </div>
@@ -148,3 +172,4 @@ function TrackMe() {
     </AppShell>
   );
 }
+

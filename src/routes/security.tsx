@@ -77,7 +77,7 @@ const ROUTES: Record<string, [number, number][]> = {
 };
 
 function SecurityPage() {
-  const { role } = useWcu();
+  const { role, setRole } = useWcu();
   const { user } = useAuthUser();
   const [view, setView] = React.useState<"device" | "control">("control");
   const [guards, setGuards] = React.useState<Guard[]>([]);
@@ -212,9 +212,24 @@ function SecurityPage() {
     return (
       <AppShell>
         <ScreenHeader title="Guard Tracking" back="/home" />
-        <div className="glass rounded-2xl p-5 text-sm">
-          <ShieldAlert className="mb-2 h-6 w-6 text-warn" />
-          This page is only for <b>Security Company</b> mode. Switch your role to Security Company on your Profile to open it.
+        <div className="glass rounded-3xl p-6 text-center space-y-4">
+          <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-electric/20 text-electric border border-electric/40">
+            <Radio className="h-7 w-7" />
+          </div>
+          <div>
+            <h2 className="font-display text-base font-bold text-foreground">
+              Security Control Room Access
+            </h2>
+            <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+              Guard Tracking and Control Room telemetry are optimized for <b>Security Company</b> operators.
+            </p>
+          </div>
+          <button
+            onClick={() => setRole("security")}
+            className="glow-electric w-full rounded-2xl bg-gradient-to-r from-electric to-violet py-3.5 font-display text-sm font-bold tracking-widest text-electric-foreground shadow-lg transition hover:opacity-95"
+          >
+            ACTIVATE SECURITY MODE & OPEN
+          </button>
         </div>
       </AppShell>
     );

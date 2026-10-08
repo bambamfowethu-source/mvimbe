@@ -48,6 +48,23 @@ function AlertsScreen() {
     <AppShell>
       <ScreenHeader title="AI Alerts" subtitle="Live intelligence feed" back="/home" />
 
+      {/* Vicinity Realtime Banner */}
+      <div className="glass mb-3 flex items-center justify-between rounded-2xl border border-neon/40 bg-surface-2/60 p-3 text-xs">
+        <div className="flex items-center gap-2">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-neon opacity-75" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-neon" />
+          </span>
+          <div>
+            <span className="font-semibold text-foreground block">Vicinity Push Notification Mesh</span>
+            <span className="text-[10px] text-muted-foreground">Supabase Realtime streaming active</span>
+          </div>
+        </div>
+        <span className="rounded-full bg-neon/15 px-2 py-0.5 text-[10px] font-bold text-neon border border-neon/30">
+          5 km Radius
+        </span>
+      </div>
+
       <div className="space-y-3">
         {AI_ALERTS.map((a) => {
           const Icon = toneIcon[a.tone] ?? AlertTriangle;

@@ -3,6 +3,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import { Bell, Home, MapPin, Signal, User, Wifi, BatteryFull } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { AI_ALERTS } from "@/lib/wcu/data";
+import { VicinityNotifications } from "./VicinityNotifications";
 
 function StatusBar() {
   const [time, setTime] = React.useState("9:41");
@@ -84,6 +85,7 @@ export function AppShell({
       />
       <div className="relative mx-auto flex min-h-screen w-full max-w-md flex-col">
         <StatusBar />
+        <VicinityNotifications />
         <main key={pathname} className={cn("flex-1 px-4 pb-28 animate-fade-in", className)}>
           {children}
         </main>
