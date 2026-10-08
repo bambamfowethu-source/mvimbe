@@ -42,6 +42,7 @@ export const Route = createFileRoute("/home")({
 });
 
 const ACTIONS = [
+  { to: "/sound-alert", label: "SoundAlert", icon: Siren, tone: "alert", roles: ["citizen", "patroller", "police", "security"] },
   { to: "/clock-in", label: "Clock In", icon: ScanFace, tone: "neon", roles: ["patroller", "security"] },
   { to: "/security", label: "Guard Tracking", icon: Radar, tone: "electric", roles: ["security"] },
   { to: "/mine", label: "MINE Safety", icon: HardHat, tone: "warn", roles: ["citizen", "patroller", "police", "security"] },
