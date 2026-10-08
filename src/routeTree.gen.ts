@@ -21,6 +21,7 @@ import { Route as MineRouteImport } from './routes/mine'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as SecurityRouteImport } from './routes/security'
+import { Route as SoundAlertRouteImport } from './routes/sound-alert'
 import { Route as TrackMeRouteImport } from './routes/track-me'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedActivityRouteImport } from './routes/_authenticated/activity'
@@ -92,6 +93,11 @@ const ReportRoute = ReportRouteImport.update({
 const SecurityRoute = SecurityRouteImport.update({
   id: '/security',
   path: '/security',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SoundAlertRoute = SoundAlertRouteImport.update({
+  id: '/sound-alert',
+  path: '/sound-alert',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TrackMeRoute = TrackMeRouteImport.update({
@@ -172,6 +178,7 @@ export interface FileRoutesByFullPath {
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
   '/security': typeof SecurityRoute
+  '/sound-alert': typeof SoundAlertRoute
   '/track-me': typeof TrackMeRoute
   '/account': typeof AuthenticatedAccountRoute
   '/activity': typeof AuthenticatedActivityRoute
@@ -198,6 +205,7 @@ export interface FileRoutesByTo {
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
   '/security': typeof SecurityRoute
+  '/sound-alert': typeof SoundAlertRoute
   '/track-me': typeof TrackMeRoute
   '/account': typeof AuthenticatedAccountRoute
   '/activity': typeof AuthenticatedActivityRoute
@@ -226,6 +234,7 @@ export interface FileRoutesById {
   '/profile': typeof ProfileRoute
   '/report': typeof ReportRoute
   '/security': typeof SecurityRoute
+  '/sound-alert': typeof SoundAlertRoute
   '/track-me': typeof TrackMeRoute
   '/_authenticated/account': typeof AuthenticatedAccountRoute
   '/_authenticated/activity': typeof AuthenticatedActivityRoute
@@ -254,6 +263,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/report'
     | '/security'
+    | '/sound-alert'
     | '/track-me'
     | '/account'
     | '/activity'
@@ -280,6 +290,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/report'
     | '/security'
+    | '/sound-alert'
     | '/track-me'
     | '/account'
     | '/activity'
@@ -307,6 +318,7 @@ export interface FileRouteTypes {
     | '/profile'
     | '/report'
     | '/security'
+    | '/sound-alert'
     | '/track-me'
     | '/_authenticated/account'
     | '/_authenticated/activity'
@@ -335,6 +347,7 @@ export interface RootRouteChildren {
   ProfileRoute: typeof ProfileRoute
   ReportRoute: typeof ReportRoute
   SecurityRoute: typeof SecurityRoute
+  SoundAlertRoute: typeof SoundAlertRoute
   TrackMeRoute: typeof TrackMeRoute
   ToolsCommunityRoute: typeof ToolsCommunityRoute
   ToolsEvidenceRoute: typeof ToolsEvidenceRoute
@@ -428,6 +441,13 @@ declare module '@tanstack/react-router' {
       path: '/security'
       fullPath: '/security'
       preLoaderRoute: typeof SecurityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sound-alert': {
+      id: '/sound-alert'
+      path: '/sound-alert'
+      fullPath: '/sound-alert'
+      preLoaderRoute: typeof SoundAlertRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/track-me': {
@@ -569,6 +589,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfileRoute: ProfileRoute,
   ReportRoute: ReportRoute,
   SecurityRoute: SecurityRoute,
+  SoundAlertRoute: SoundAlertRoute,
   TrackMeRoute: TrackMeRoute,
   ToolsCommunityRoute: ToolsCommunityRoute,
   ToolsEvidenceRoute: ToolsEvidenceRoute,
